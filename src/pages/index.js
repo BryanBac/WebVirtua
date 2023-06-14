@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react';
+
 export default function Home() {
   const [respuesta, setRespuesta] = useState([])
   const activar = async () => {
@@ -36,8 +37,8 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            {respuesta.map((row) => (
-              <tr>
+            {respuesta.map((row, count) => (
+              <tr key={count+1}>
                 <td>{row.Id}</td>
                 <td>{row.Nombre}</td>
               </tr>
