@@ -3,6 +3,11 @@ import { useEffect, useState } from 'react';
 
 export default function Home() {
   const [respuesta, setRespuesta] = useState([])
+
+  const timer = setInterval(() => {
+    console.log('Se ejecutó el useEffect');
+  }, 3000);
+
   const activar = async () => {
     const response = await fetch("/api/hello", {
       method: "GET",
@@ -19,7 +24,7 @@ export default function Home() {
   }
   useEffect(() => {
     activar()
-  }, [])
+  }, [timer])
   return (
     <>
       <Head>
