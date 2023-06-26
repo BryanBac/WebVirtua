@@ -1,12 +1,31 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react';
+import LineChart from './lineChart';
 
 export default function Home() {
-  const [respuesta, setRespuesta] = useState([])
+  const [data, setData] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: 'Data',
+        data: [],
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+      },
+    ],
+  });
+  const [contador, setContador] = useState(0)
+  const [seconds, setSeconds] = useState(0);
+  const [grafica, setGrafica] = useState();
 
-  const timer = setInterval(() => {
-    console.log('Se ejecutó el useEffect');
-  }, 3000);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSeconds((prevSeconds) => prevSeconds + 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
 
   const activar = async () => {
     const response = await fetch("/api/hello", {
@@ -16,15 +35,26 @@ export default function Home() {
       },
     });
 
-    const data = await response.json();
-    setRespuesta(data)
+    const data2 = await response.json();
+    const newData = {
+      labels: [...data.labels, contador],
+      datasets: [
+        {
+          ...data.datasets[0],
+          data: [...data.datasets[0].data, data2.length],
+        },
+      ],
+    };
+    setData(newData);
+    setContador(contador+1)
     if (response.status !== 200) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
   }
-  useEffect(() => {
+
+  useEffect(()=>{
     activar()
-  }, [timer])
+  },[seconds])
   return (
     <>
       <Head>
@@ -34,23 +64,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <table>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Nombre</th>
-            </tr>
-          </thead>
-          <tbody>
-            {respuesta.map((row, count) => (
-              <tr key={count+1}>
-                <td>{row.Id}</td>
-                <td>{row.Nombre}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
+        <h1>Cantidad de datos en el tiempo</h1>
+        <LineChart data={data}/>
       </div>
     </>
   )
