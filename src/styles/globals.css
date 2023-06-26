@@ -105,3 +105,13 @@ a {
     color-scheme: dark;
   }
 }
+
+.altura{
+  height: 50vh;
+}
+.flexear{
+  display: flex;
+}
+.centrar{
+  justify-content: center;
+}

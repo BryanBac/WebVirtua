@@ -64,8 +64,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <h1>Cantidad de datos en el tiempo</h1>
-        <LineChart data={data}/>
+        <h1  className='flexear centrar'>Cantidad de datos en el tiempo</h1>
+        <div className='altura'><LineChart data={data}/></div>
       </div>
     </>
   )
