@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import LineChart from './lineChart';
 
 export default function Home() {
+  // react hooks para poder almacenar los datos que estoy trayendo
   const [labl, setLabl] = useState([])
   const [labl2, setLabl2] = useState([]) // para rodolfo
   const [valores, setValores] = useState([])
@@ -34,7 +35,7 @@ export default function Home() {
       },
     ],
   });
-
+  // otro react hook llamado useEffect
   useEffect(() => {
     const timer = setInterval(() => {
       setSeconds((prevSeconds) => prevSeconds + 1);
@@ -75,6 +76,7 @@ export default function Home() {
       };
     }
     setData(newData);
+    // el [...valores, data2.length] el primer "...valores" trae un historico, el data2.length es el nuevo valor
     setValores([...valores, data2.length])
     setLabl([...labl, contador])
     setContador(contador + 1)
