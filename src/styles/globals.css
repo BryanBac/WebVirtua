@@ -115,3 +115,7 @@ a {
 .centrar{
   justify-content: center;
 }
+.grilla{
+  display: grid;
+  grid-template-columns: 45% 45%;
+}

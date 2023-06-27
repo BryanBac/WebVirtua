@@ -4,7 +4,12 @@ import LineChart from './lineChart';
 
 export default function Home() {
   const [labl, setLabl] = useState([])
+  const [labl2, setLabl2] = useState([]) // para rodolfo
   const [valores, setValores] = useState([])
+  const [valores2, setValores2] = useState([]) // para rodolfo
+  const [contador, setContador] = useState(0)
+  const [seconds, setSeconds] = useState(0);
+  const [contador2, setContador2] = useState(0) // para rodolfo
   const [data, setData] = useState({
     labels: [],
     datasets: [
@@ -17,9 +22,18 @@ export default function Home() {
       },
     ],
   });
-  const [contador, setContador] = useState(0)
-  const [seconds, setSeconds] = useState(0);
-  const [grafica, setGrafica] = useState();
+  const [data2, setData2] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: 'Data',
+        data: [],
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+      },
+    ],
+  });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -36,9 +50,7 @@ export default function Home() {
         "Content-Type": "application/json",
       },
     });
-
     const data2 = await response.json();
-
     let newData = {}
     if (labl.length > 0) {
       console.log("entro")
@@ -51,7 +63,7 @@ export default function Home() {
           },
         ],
       };
-    }else{
+    } else {
       newData = {
         labels: [contador],
         datasets: [
@@ -62,7 +74,6 @@ export default function Home() {
         ],
       };
     }
-
     setData(newData);
     setValores([...valores, data2.length])
     setLabl([...labl, contador])
@@ -72,8 +83,50 @@ export default function Home() {
     }
   }
 
+  // para rodolfo
+  const activar2 = async () => {
+    const response = await fetch("/api/rodolfo", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data2 = await response.json();
+    let newData = {}
+    if (labl.length > 0) {
+      console.log("entro2")
+      newData = {
+        labels: [...labl2, contador2],
+        datasets: [
+          {
+            ...data.datasets[0],
+            data: [...data.datasets[0].data, data2.length],
+          },
+        ],
+      };
+    } else {
+      newData = {
+        labels: [contador2],
+        datasets: [
+          {
+            ...data.datasets[0],
+            data: [data2.length],
+          },
+        ],
+      };
+    }
+    setData2(newData);
+    setValores2([...valores2, data2.length])
+    setLabl2([...labl2, contador2])
+    setContador2(contador2 + 1)
+    if (response.status !== 200) {
+      throw data.error || new Error(`Request failed with status ${response.status}`);
+    }
+  }
+
   useEffect(() => {
     activar()
+    activar2()
   }, [seconds])
   return (
     <>
@@ -85,7 +138,17 @@ export default function Home() {
       </Head>
       <div>
         <h1 className='flexear centrar'>Cantidad de datos en el tiempo</h1>
-        <div className='altura'><LineChart valores={valores} etiquetas={labl} /></div>
+        <div className='grilla'>
+          <div>
+            <h1>Clientes</h1>
+            <div className='altura'><LineChart valores={valores} etiquetas={labl} /></div>
+          </div>
+          <div>
+            <h1>Compras</h1>
+            <div className='altura'><LineChart valores={valores2} etiquetas={labl2} /></div>
+          </div>
+        </div>
+
       </div>
     </>
   )
