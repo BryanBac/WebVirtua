@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import LineChart from './lineChart';
 
 export default function Home() {
+  const [labl, setLabl] = useState([])
+  const [valores, setValores] = useState([])
   const [data, setData] = useState({
     labels: [],
     datasets: [
@@ -36,25 +38,43 @@ export default function Home() {
     });
 
     const data2 = await response.json();
-    const newData = {
-      labels: [...data.labels, contador],
-      datasets: [
-        {
-          ...data.datasets[0],
-          data: [...data.datasets[0].data, data2.length],
-        },
-      ],
-    };
+
+    let newData = {}
+    if (labl.length > 0) {
+      console.log("entro")
+      newData = {
+        labels: [...labl, contador],
+        datasets: [
+          {
+            ...data.datasets[0],
+            data: [...data.datasets[0].data, data2.length],
+          },
+        ],
+      };
+    }else{
+      newData = {
+        labels: [contador],
+        datasets: [
+          {
+            ...data.datasets[0],
+            data: [data2.length],
+          },
+        ],
+      };
+    }
+
     setData(newData);
-    setContador(contador+1)
+    setValores([...valores, data2.length])
+    setLabl([...labl, contador])
+    setContador(contador + 1)
     if (response.status !== 200) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     activar()
-  },[seconds])
+  }, [seconds])
   return (
     <>
       <Head>
@@ -64,8 +84,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <h1  className='flexear centrar'>Cantidad de datos en el tiempo</h1>
-        <div className='altura'><LineChart data={data}/></div>
+        <h1 className='flexear centrar'>Cantidad de datos en el tiempo</h1>
+        <div className='altura'><LineChart valores={valores} etiquetas={labl} /></div>
       </div>
     </>
   )
