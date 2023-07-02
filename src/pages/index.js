@@ -52,30 +52,6 @@ export default function Home() {
       },
     });
     const data2 = await response.json();
-    let newData = {}
-    if (labl.length > 0) {
-      console.log("entro")
-      newData = {
-        labels: [...labl, contador],
-        datasets: [
-          {
-            ...data.datasets[0],
-            data: [...data.datasets[0].data, data2.length],
-          },
-        ],
-      };
-    } else {
-      newData = {
-        labels: [contador],
-        datasets: [
-          {
-            ...data.datasets[0],
-            data: [data2.length],
-          },
-        ],
-      };
-    }
-    setData(newData);
     // el [...valores, data2.length] el primer "...valores" trae un historico, el data2.length es el nuevo valor
     setValores([...valores, data2.length])
     setLabl([...labl, contador])
@@ -97,27 +73,7 @@ export default function Home() {
     let newData = {}
     if (labl.length > 0) {
       console.log("entro2")
-      newData = {
-        labels: [...labl2, contador2],
-        datasets: [
-          {
-            ...data.datasets[0],
-            data: [...data.datasets[0].data, data2.length],
-          },
-        ],
-      };
-    } else {
-      newData = {
-        labels: [contador2],
-        datasets: [
-          {
-            ...data.datasets[0],
-            data: [data2.length],
-          },
-        ],
-      };
     }
-    setData2(newData);
     setValores2([...valores2, data2.length])
     setLabl2([...labl2, contador2])
     setContador2(contador2 + 1)
