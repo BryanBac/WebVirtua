@@ -11,35 +11,11 @@ export default function Home() {
   const [contador, setContador] = useState(0)
   const [seconds, setSeconds] = useState(0);
   const [contador2, setContador2] = useState(0) // para rodolfo
-  const [data, setData] = useState({
-    labels: [],
-    datasets: [
-      {
-        label: 'Data',
-        data: [],
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1,
-      },
-    ],
-  });
-  const [data2, setData2] = useState({
-    labels: [],
-    datasets: [
-      {
-        label: 'Data',
-        data: [],
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1,
-      },
-    ],
-  });
-  // otro react hook llamado useEffect
+
   useEffect(() => {
     const timer = setInterval(() => {
       setSeconds((prevSeconds) => prevSeconds + 1);
-    }, 1000);
+    }, 500);
     return () => clearInterval(timer);
   }, []);
 
@@ -57,7 +33,7 @@ export default function Home() {
     setLabl([...labl, contador])
     setContador(contador + 1)
     if (response.status !== 200) {
-      throw data.error || new Error(`Request failed with status ${response.status}`);
+      throw data2.error || new Error(`Request failed with status ${response.status}`);
     }
   }
 
@@ -70,15 +46,11 @@ export default function Home() {
       },
     });
     const data2 = await response.json();
-    let newData = {}
-    if (labl.length > 0) {
-      console.log("entro2")
-    }
     setValores2([...valores2, data2.length])
     setLabl2([...labl2, contador2])
     setContador2(contador2 + 1)
     if (response.status !== 200) {
-      throw data.error || new Error(`Request failed with status ${response.status}`);
+      throw data2.error || new Error(`Request failed with status ${response.status}`);
     }
   }
 
